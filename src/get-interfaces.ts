@@ -105,8 +105,12 @@ export function getClassStringFromDescription({ name, typeMap }: InterfaceDescri
         subClasses[typeName] = name
         return '';
       }
-      if (/[\[\]]/g.test(key)) { // TODO: add support for Array type ex. property[RefClass] = []
-        typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+      if (/[\[\]]/g.test(key)) {
+        if (/[\[\]]/g.test(typeName)) {
+          typeName = key.replace(/.*\[|]|\'/g, '') + '[]';
+        } else {
+          typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+        }
         key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
       }
       return `  ${key}: ${typeName};\n`;
