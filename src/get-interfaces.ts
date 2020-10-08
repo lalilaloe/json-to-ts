@@ -50,7 +50,6 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
         if (!isHash(type)) {
           return [key, type, isOptional];
         }
-
         const newType = findNameById(type, names);
         return [key, newType, isOptional];
       })
@@ -106,14 +105,16 @@ export function getClassStringFromDescription({ name, typeMap }: InterfaceDescri
         subClasses[typeName] = name
         return '';
       }
-      if (/[\[\]]/g.test(key)) {
-        key = key.replace(/\[.*\]|\'/g, '');
+      if (/[\[\]]/g.test(key)) { // TODO: add support for Array type ex. property[RefClass] = []
+        typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+        key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
       }
       return `  ${key}: ${typeName};\n`;
     })
     .reduce((a, b) => (a += b), "");
 
   let classString = `class ${name} `;
+  console.log(name, Object.keys(subClasses).length);
   if (isSubClass(name)) {
     classString += `extends ${subClasses[name]} `
   }
@@ -127,7 +128,6 @@ export function getInterfaceDescriptions(typeStructure: TypeStructure, names: Na
   return names
     .map(({ id, name }) => {
       const typeDescription = findTypeById(id, typeStructure.types);
-
       if (typeDescription.typeObj) {
         const typeMap = replaceTypeObjIdsWithNames(typeDescription.typeObj, names);
         return { name, typeMap };

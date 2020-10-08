@@ -1,8 +1,7 @@
 import * as hash from "hash.js";
+import { TypeDescription, TypeGroup, TypeStructure } from "./model";
+import { findTypeById, getTypeDescriptionGroup, isArray, isDate, isHash, isObject, onlyUnique } from "./util";
 
-import { TypeDescription, TypeStructure } from "./model";
-import { isHash, getTypeDescriptionGroup, findTypeById, isArray, isObject, onlyUnique, isDate } from "./util";
-import { TypeGroup } from "./model";
 
 function createTypeDescription(typeObj: any | string[], isUnion: boolean): TypeDescription {
   if (isArray(typeObj)) {
@@ -20,9 +19,14 @@ function createTypeDescription(typeObj: any | string[], isUnion: boolean): TypeD
 }
 
 function getIdByType(typeObj: any | string[], types: TypeDescription[], isUnion: boolean = false): string {
+  const explicitRef = Object.keys(typeObj).find(t => /[\[\]]/g.test(t.toString()))
+  if (explicitRef) {
+    //console.log(typeObj)
+  }
   let typeDesc = types.find(el => {
     return typeObjectMatchesTypeDesc(typeObj, el, isUnion);
   });
+
 
   if (!typeDesc) {
     typeDesc = createTypeDescription(typeObj, isUnion);
@@ -92,6 +96,9 @@ function getTypeGroup(value: any): TypeGroup {
 
 function createTypeObject(obj: any, types: TypeDescription[]): any {
   return Object.entries(obj).reduce((typeObj, [key, value]) => {
+    // if (/[\[\]]/g.test(value.toString())) {
+    //   console.log('early test', value)
+    // }
     const { rootTypeId } = getTypeStructure(value, types);
 
     return {
@@ -187,11 +194,11 @@ function getInnerArrayType(typesOfArray: string[], types: TypeDescription[]): st
 
   const allArrayTypeWithNull =
     arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length + 1 ===
-      typesOfArray.length && containsNull;
+    typesOfArray.length && containsNull;
 
   const allObjectTypeWithNull =
     arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length + 1 ===
-      typesOfArray.length && containsNull;
+    typesOfArray.length && containsNull;
 
   const allObjectType =
     arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length ===
@@ -245,6 +252,14 @@ export function getTypeStructure(
       };
 
     case TypeGroup.Object:
+      const explicitRef = Object.keys(targetObj).find(t => /[\[\]]/g.test(t.toString()))
+      if (explicitRef) {
+        //console.log(types)
+        //console.log(targetObj[explicitRef])
+        // targetObj[explicitRef.replace(/.*\[|]/g, '').toLowerCase()] = targetObj[explicitRef];
+        // delete targetObj[explicitRef];
+        //console.log("getTypeStructure", targetObj)
+      }
       const typeObj = createTypeObject(targetObj, types);
       const objType = getIdByType(typeObj, types);
 

@@ -28,13 +28,16 @@ function getName(
       };
 
     case TypeGroup.Object:
+      let rootName;
+      if (!rootName) rootName = getNameById(typeDesc.id, keyName, isInsideArray, types, names);
       Object.entries(typeDesc.typeObj).forEach(([key, value]) => {
         getName({ rootTypeId: value, types }, key, names, false);
       });
       return {
-        rootName: getNameById(typeDesc.id, keyName, isInsideArray, types, names),
+        rootName: rootName,
         names
       };
+
 
     case TypeGroup.Primitive:
       // in this case rootTypeId is primitive type string (string, null, number, boolean)
@@ -46,8 +49,10 @@ function getName(
 }
 
 export function getNames(typeStructure: TypeStructure, rootName: string = "RootObject"): NameEntry[] {
-  return getName(typeStructure, rootName, [], false).names.reverse();
+  return getName(typeStructure, rootName, [], false).names;
 }
+
+const explicitNames: any = {}
 
 function getNameById(
   id: string,
@@ -90,12 +95,11 @@ function getNameById(
         .pop();
       break;
   }
-
   nameMap.push({ id, name });
   return name;
 }
 
-function pascalCase(name: string) {
+export function pascalCase(name: string) {
   return name
     .split(/\s+/g)
     .filter(_ => _ !== "")
@@ -107,13 +111,10 @@ function capitalize(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-function normalizeInvalidTypeName(name: string): string {
+export function normalizeInvalidTypeName(name: string): string {
   if (/^[a-zA-Z][a-zA-Z0-9]*$/.test(name)) {
     return name;
   } else {
-    if (/[\[\]]/g.test(name)) {
-      name = name.replace(/.*\[|]/g, '')
-    }
     const noSymbolsName = name.replace(/[^a-zA-Z0-9]/g, "");
     const startsWithWordCharacter = /^[a-zA-Z]/.test(noSymbolsName);
 

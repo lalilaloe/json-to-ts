@@ -5,7 +5,7 @@ import {
   getInterfaceDescriptions,
   getInterfaceStringFromDescription
 } from "./get-interfaces";
-import { getNames } from "./get-names";
+import { getNames, normalizeInvalidTypeName, pascalCase } from "./get-names";
 import { getTypeStructure, optimizeTypeStructure } from "./get-type-structure";
 import { Options } from "./model";
 import { isArray, isObject } from "./util";
@@ -48,9 +48,24 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
       getInterfaceStringFromDescription
     );
   } else {
-    return getClassDescriptions(typeStructure, names).map(
-      getClassStringFromDescription
-    );
+    // TODO: move to function
+    // Fixes creating duplicate classes with references ex. property[RefClass]
+    const classDescriptions = getClassDescriptions(typeStructure, names)
+    const explicitRefs = classDescriptions.filter(d => {
+      return Object.keys(d.typeMap).find(key => /[\[\]]/g.test(key))
+    })
+    if (explicitRefs && explicitRefs.length) {
+      for (const ref of explicitRefs) {
+        const keysWithExplicitRef = Object.keys(ref.typeMap).filter(key => /[\[\]]/g.test(key));
+        for (const key of keysWithExplicitRef) {
+          const nameOfIncorrectClass = pascalCase(normalizeInvalidTypeName(key))
+          const indexOfIncorrectRef = classDescriptions.indexOf(classDescriptions.find(c => c && c.name === nameOfIncorrectClass))
+          delete classDescriptions[indexOfIncorrectRef]
+        }
+      }
+    }
+
+    return classDescriptions.map(getClassStringFromDescription);
   }
 
 }
