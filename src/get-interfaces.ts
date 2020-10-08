@@ -1,5 +1,5 @@
-import { InterfaceDescription, NameEntry, TypeStructure, KeyMetaData } from "./model";
-import { isHash, findTypeById, isNonArrayUnion } from "./util";
+import { InterfaceDescription, KeyMetaData, NameEntry, TypeStructure } from "./model";
+import { findTypeById, isHash, isNonArrayUnion } from "./util";
 
 function isKeyNameValid(keyName: string) {
   const regex = /^[a-zA-Z_][a-zA-Z\d_]*$/;
@@ -93,6 +93,33 @@ export function getInterfaceStringFromDescription({ name, typeMap }: InterfaceDe
   return interfaceString;
 }
 
+const subClasses: any = {}
+
+function isSubClass(name: string) {
+  return Object.keys(subClasses).find(s => s === name)
+}
+
+export function getClassStringFromDescription({ name, typeMap }: InterfaceDescription): string {
+  const stringTypeMap = Object.entries(typeMap)
+    .map(([key, typeName]) => {
+      if (/\+/g.test(key)) {
+        subClasses[typeName] = name
+        return '';
+      }
+      return `  ${key}: ${typeName};\n`;
+    })
+    .reduce((a, b) => (a += b), "");
+
+  let classString = `class ${name} `;
+  if (isSubClass(name)) {
+    classString += `extends ${subClasses[name]} `
+  }
+  classString += '{\n' + stringTypeMap;
+  classString += "}";
+
+  return classString;
+}
+
 export function getInterfaceDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
   return names
     .map(({ id, name }) => {
@@ -107,3 +134,19 @@ export function getInterfaceDescriptions(typeStructure: TypeStructure, names: Na
     })
     .filter(_ => _ !== null);
 }
+
+export function getClassDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
+  return names
+    .map(({ id, name }) => {
+      const typeDescription = findTypeById(id, typeStructure.types);
+      if (typeDescription.typeObj) {
+        const typeMap = replaceTypeObjIdsWithNames(typeDescription.typeObj, names);
+        return { name, typeMap };
+      } else {
+        return null;
+      }
+    })
+    .filter(_ => _ !== null);
+}
+
+

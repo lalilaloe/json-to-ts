@@ -1,7 +1,7 @@
 import * as pluralize from "pluralize";
+import { NameEntry, NameStructure, TypeDescription, TypeGroup, TypeStructure } from "./model";
+import { findTypeById, getTypeDescriptionGroup, isHash, parseKeyMetaData } from "./util";
 
-import { TypeStructure, NameEntry, NameStructure, TypeGroup, TypeDescription } from "./model";
-import { getTypeDescriptionGroup, parseKeyMetaData, findTypeById, isHash } from "./util";
 
 function getName(
   { rootTypeId, types }: TypeStructure,
@@ -141,7 +141,7 @@ function getArrayName(typeDesc: TypeDescription, types: TypeDescription[], nameM
 function convertToReadableType(idOrPrimitive: string, types: TypeDescription[], nameMap: NameEntry[]): string {
   return isHash(idOrPrimitive)
     ? // array keyName makes no difference in picking name for type
-      getNameById(idOrPrimitive, null, true, types, nameMap)
+    getNameById(idOrPrimitive, null, true, types, nameMap)
     : idOrPrimitive;
 }
 

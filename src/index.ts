@@ -1,17 +1,20 @@
-import { getTypeStructure, optimizeTypeStructure } from "./get-type-structure";
-import { Options } from "./model";
 import { shim } from "es7-shim/es7-shim";
 import {
+  getClassDescriptions,
+  getClassStringFromDescription,
   getInterfaceDescriptions,
   getInterfaceStringFromDescription
 } from "./get-interfaces";
 import { getNames } from "./get-names";
+import { getTypeStructure, optimizeTypeStructure } from "./get-type-structure";
+import { Options } from "./model";
 import { isArray, isObject } from "./util";
 shim();
 
 export default function JsonToTS(json: any, userOptions?: Options): string[] {
   const defaultOptions: Options = {
-    rootName: "RootObject"
+    rootName: "RootObject",
+    useInterface: true
   };
   const options = {
     ...defaultOptions,
@@ -40,9 +43,16 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
 
   const names = getNames(typeStructure, options.rootName);
 
-  return getInterfaceDescriptions(typeStructure, names).map(
-    getInterfaceStringFromDescription
-  );
+  if (options.useInterface) {
+    return getInterfaceDescriptions(typeStructure, names).map(
+      getInterfaceStringFromDescription
+    );
+  } else {
+    return getClassDescriptions(typeStructure, names).map(
+      getClassStringFromDescription
+    );
+  }
+
 }
 
 (<any>JsonToTS).default = JsonToTS;

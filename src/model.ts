@@ -34,6 +34,7 @@ export interface InterfaceDescription {
 
 export interface Options {
   rootName: string;
+  useInterface?: boolean;
 }
 
 export interface KeyMetaData {
