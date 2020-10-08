@@ -106,6 +106,9 @@ export function getClassStringFromDescription({ name, typeMap }: InterfaceDescri
         subClasses[typeName] = name
         return '';
       }
+      if (/[\[\]]/g.test(key)) {
+        key = key.replace(/\[.*\]|\'/g, '');
+      }
       return `  ${key}: ${typeName};\n`;
     })
     .reduce((a, b) => (a += b), "");

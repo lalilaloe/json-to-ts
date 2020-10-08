@@ -79,9 +79,8 @@ function getNameById(
       name = [keyName]
         .map(key => parseKeyMetaData(key).keyValue)
         .map(name => (isInsideArray ? pluralize.singular(name) : name))
-        .map(pascalCase)
         .map(normalizeInvalidTypeName)
-        .map(pascalCase) // needed because removed symbols might leave first character uncapitalized
+        .map(pascalCase)
         .map(name =>
           uniqueByIncrement(
             name,
@@ -112,8 +111,12 @@ function normalizeInvalidTypeName(name: string): string {
   if (/^[a-zA-Z][a-zA-Z0-9]*$/.test(name)) {
     return name;
   } else {
+    if (/[\[\]]/g.test(name)) {
+      name = name.replace(/.*\[|]/g, '')
+    }
     const noSymbolsName = name.replace(/[^a-zA-Z0-9]/g, "");
     const startsWithWordCharacter = /^[a-zA-Z]/.test(noSymbolsName);
+
     return startsWithWordCharacter ? noSymbolsName : `_${noSymbolsName}`;
   }
 }
