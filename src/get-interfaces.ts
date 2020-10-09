@@ -98,27 +98,33 @@ function isSubClass(name: string) {
   return Object.keys(subClasses).find(s => s === name)
 }
 
+export function getExplicitRef(key: string, typeName: string = '') {
+  if (/[\[\]]/g.test(typeName)) {
+    typeName = key.replace(/.*\[|]|\'/g, '') + '[]';
+  } else {
+    typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+  }
+  key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
+  return { key, typeName }
+}
+
 export function getClassStringFromDescription({ name, typeMap }: InterfaceDescription): string {
   const stringTypeMap = Object.entries(typeMap)
-    .map(([key, typeName]) => {
-      if (/\+/g.test(key)) {
+    .map(([key, typeName]) => { // TODO: move to function
+      if (/\+/g.test(key)) { // In case of a subClass
         subClasses[typeName] = name
-        return '';
+        return ''; // Discard property from parent
       }
-      if (/[\[\]]/g.test(key)) {
-        if (/[\[\]]/g.test(typeName)) {
-          typeName = key.replace(/.*\[|]|\'/g, '') + '[]';
-        } else {
-          typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
-        }
-        key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
+      if (/[\[\]]/g.test(key)) { // In case of an explicitRef
+        const explicitRef = getExplicitRef(key, typeName);
+        key = explicitRef.key;
+        typeName = explicitRef.typeName;
       }
       return `  ${key}: ${typeName};\n`;
     })
     .reduce((a, b) => (a += b), "");
 
   let classString = `class ${name} `;
-  console.log(name, Object.keys(subClasses).length);
   if (isSubClass(name)) {
     classString += `extends ${subClasses[name]} `
   }

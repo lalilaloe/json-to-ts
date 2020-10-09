@@ -2,6 +2,7 @@ import { shim } from "es7-shim/es7-shim";
 import {
   getClassDescriptions,
   getClassStringFromDescription,
+  getExplicitRef,
   getInterfaceDescriptions,
   getInterfaceStringFromDescription
 } from "./get-interfaces";
@@ -57,10 +58,17 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
     if (explicitRefs && explicitRefs.length) {
       for (const ref of explicitRefs) {
         const keysWithExplicitRef = Object.keys(ref.typeMap).filter(key => /[\[\]]/g.test(key));
-        for (const key of keysWithExplicitRef) {
-          const nameOfIncorrectClass = pascalCase(normalizeInvalidTypeName(key))
+        for (const propertyKey of keysWithExplicitRef) {
+          const nameOfIncorrectClass = pascalCase(normalizeInvalidTypeName(propertyKey))
           const indexOfIncorrectRef = classDescriptions.indexOf(classDescriptions.find(c => c && c.name === nameOfIncorrectClass))
-          delete classDescriptions[indexOfIncorrectRef]
+          if (classDescriptions[indexOfIncorrectRef]) {
+            if (Object.keys(classDescriptions[indexOfIncorrectRef].typeMap).length) { // In case only the name is incorrect, but does contain properties. It is processed as a new class
+              const { key, typeName } = getExplicitRef(propertyKey, '')
+              classDescriptions[indexOfIncorrectRef].name = typeName // Give correct name
+            } else { // TODO: Give warning if referenced class is not found
+              delete classDescriptions[indexOfIncorrectRef] // If name is incorrect and no properties exist, ex. property[RefClass] = {}. prevent making duplicate classes
+            }
+          }
         }
       }
     }
