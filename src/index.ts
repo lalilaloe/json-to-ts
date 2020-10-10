@@ -2,7 +2,9 @@ import { shim } from "es7-shim/es7-shim";
 import {
   getClassDescriptions,
   getClassStringFromDescription,
+
   getExplicitRef,
+
   getInterfaceDescriptions,
   getInterfaceStringFromDescription
 } from "./get-interfaces";
@@ -68,7 +70,9 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
             } else { // TODO: Give warning if referenced class is not found
               delete classDescriptions[indexOfIncorrectRef] // If name is incorrect and no properties exist, ex. property[RefClass] = {}. prevent making duplicate classes
             }
+
           }
+          //console.log(nameOfIncorrectClass)
         }
       }
     }

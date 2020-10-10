@@ -52,8 +52,6 @@ export function getNames(typeStructure: TypeStructure, rootName: string = "RootO
   return getName(typeStructure, rootName, [], false).names;
 }
 
-const explicitNames: any = {}
-
 function getNameById(
   id: string,
   keyName: string,
@@ -107,7 +105,7 @@ export function pascalCase(name: string) {
     .reduce((a, b) => a + b);
 }
 
-function capitalize(name: string) {
+export function capitalize(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 

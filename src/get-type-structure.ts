@@ -1,4 +1,5 @@
 import * as hash from "hash.js";
+import { capitalize, pascalCase } from "./get-names";
 import { TypeDescription, TypeGroup, TypeStructure } from "./model";
 import { findTypeById, getTypeDescriptionGroup, isArray, isDate, isHash, isObject, onlyUnique } from "./util";
 
@@ -19,14 +20,9 @@ function createTypeDescription(typeObj: any | string[], isUnion: boolean): TypeD
 }
 
 function getIdByType(typeObj: any | string[], types: TypeDescription[], isUnion: boolean = false): string {
-  const explicitRef = Object.keys(typeObj).find(t => /[\[\]]/g.test(t.toString()))
-  if (explicitRef) {
-    //console.log(typeObj)
-  }
   let typeDesc = types.find(el => {
     return typeObjectMatchesTypeDesc(typeObj, el, isUnion);
   });
-
 
   if (!typeDesc) {
     typeDesc = createTypeDescription(typeObj, isUnion);
@@ -46,8 +42,10 @@ function Hash(content: string): string {
 function typeObjectMatchesTypeDesc(typeObj: any | string[], typeDesc: TypeDescription, isUnion): boolean {
   if (isArray(typeObj)) {
     return arraysContainSameElements(typeObj, typeDesc.arrayOfTypes) && typeDesc.isUnion === isUnion;
-  } else {
+  } else if (Object.keys(typeObj).length) {
     return objectsHaveSameEntries(typeObj, typeDesc.typeObj);
+  } else {
+    return false;
   }
 }
 
@@ -96,9 +94,18 @@ function getTypeGroup(value: any): TypeGroup {
 
 function createTypeObject(obj: any, types: TypeDescription[]): any {
   return Object.entries(obj).reduce((typeObj, [key, value]) => {
-    // if (/[\[\]]/g.test(value.toString())) {
-    //   console.log('early test', value)
-    // }
+    if (!Object.keys(value).length) { // /[\[\]]/g.test(key)
+      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) {
+        key = key + `[${capitalize((pascalCase(key)))}]`
+      }
+      if (/\+/g.test(key) && Object.keys(typeObj).length) { // Make sure object is unique if empty 
+        value[key] = {}
+      }
+    }
+    if (/[\[\]]/g.test(key)) {
+      // TODO: Properly fix what now is fixed in index.ts correcting ExplicitRefs
+    }
+
     const { rootTypeId } = getTypeStructure(value, types);
 
     return {
@@ -252,14 +259,6 @@ export function getTypeStructure(
       };
 
     case TypeGroup.Object:
-      const explicitRef = Object.keys(targetObj).find(t => /[\[\]]/g.test(t.toString()))
-      if (explicitRef) {
-        //console.log(types)
-        //console.log(targetObj[explicitRef])
-        // targetObj[explicitRef.replace(/.*\[|]/g, '').toLowerCase()] = targetObj[explicitRef];
-        // delete targetObj[explicitRef];
-        //console.log("getTypeStructure", targetObj)
-      }
       const typeObj = createTypeObject(targetObj, types);
       const objType = getIdByType(typeObj, types);
 

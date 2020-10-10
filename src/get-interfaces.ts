@@ -50,7 +50,10 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
         if (!isHash(type)) {
           return [key, type, isOptional];
         }
-        const newType = findNameById(type, names);
+        let newType = findNameById(type, names);
+        if (/[\[\]]/g.test(key)) {
+          newType = getExplicitRef(key).typeName
+        }
         return [key, newType, isOptional];
       })
       // if union has null, remove null and make type optional
