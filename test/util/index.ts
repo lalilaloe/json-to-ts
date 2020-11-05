@@ -1,1 +1,1 @@
-export const removeWhiteSpace = str => str.replace(/\s/g, '')
+export const removeWhiteSpace = (str) => str.replace(/\s/g, "");

@@ -32,12 +32,12 @@ export function parseKeyMetaData(key: string): KeyMetaData {
   if (isOptional) {
     return {
       isOptional,
-      keyValue: key.slice(0, -3)
+      keyValue: key.slice(0, -3),
     };
   } else {
     return {
       isOptional,
-      keyValue: key
+      keyValue: key,
     };
   }
 }
@@ -53,5 +53,5 @@ export function getTypeDescriptionGroup(desc: TypeDescription): TypeGroup {
 }
 
 export function findTypeById(id: string, types: TypeDescription[]): TypeDescription {
-  return types.find(_ => _.id === id);
+  return types.find((_) => _.id === id);
 }

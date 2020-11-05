@@ -12,18 +12,18 @@ function parseKeyMetaData(key: string): KeyMetaData {
   if (isOptional) {
     return {
       isOptional,
-      keyValue: key.slice(0, -3)
+      keyValue: key.slice(0, -3),
     };
   } else {
     return {
       isOptional,
-      keyValue: key
+      keyValue: key,
     };
   }
 }
 
 function findNameById(id: string, names: NameEntry[]): string {
-  return names.find(_ => _.id === id).name;
+  return names.find((_) => _.id === id).name;
 }
 
 function removeNullFromUnion(unionTypeName: string) {
@@ -52,7 +52,7 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
         }
         let newType = findNameById(type, names);
         if (/[\[\]]/g.test(key)) {
-          newType = getExplicitRef(key).typeName
+          newType = getExplicitRef(key).typeName;
         }
         return [key, newType, isOptional];
       })
@@ -95,30 +95,33 @@ export function getInterfaceStringFromDescription({ name, typeMap }: InterfaceDe
   return interfaceString;
 }
 
-const subClasses: any = {}
+const subClasses: any = {};
 
 function isSubClass(name: string) {
-  return Object.keys(subClasses).find(s => s === name)
+  return Object.keys(subClasses).find((s) => s === name);
 }
 
-export function getExplicitRef(key: string, typeName: string = '') {
+export function getExplicitRef(key: string, typeName: string = "") {
   if (/[\[\]]/g.test(typeName)) {
-    typeName = key.replace(/.*\[|]|\'/g, '') + '[]';
+    typeName = key.replace(/.*\[|]|\'/g, "") + "[]";
   } else {
-    typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+    typeName = key.replace(/.*\[|]|\'/g, ""); // Get part between brackets ex. 'before[Between]'
   }
-  key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
-  return { key, typeName }
+  key = key.replace(/\[.*\]|\'/g, ""); // Get part before brackets
+  return { key, typeName };
 }
 
 export function getClassStringFromDescription({ name, typeMap }: InterfaceDescription): string {
   const stringTypeMap = Object.entries(typeMap)
-    .map(([key, typeName]) => { // TODO: move to function
-      if (/\+/g.test(key)) { // In case of a subClass
-        subClasses[typeName] = name
-        return ''; // Discard property from parent
+    .map(([key, typeName]) => {
+      // TODO: move to function
+      if (/\+/g.test(key)) {
+        // In case of a subClass
+        subClasses[typeName] = name;
+        return ""; // Discard property from parent
       }
-      if (/[\[\]]/g.test(key)) { // In case of an explicitRef
+      if (/[\[\]]/g.test(key)) {
+        // In case of an explicitRef
         const explicitRef = getExplicitRef(key, typeName);
         key = explicitRef.key;
         typeName = explicitRef.typeName;
@@ -129,9 +132,9 @@ export function getClassStringFromDescription({ name, typeMap }: InterfaceDescri
 
   let classString = `class ${name} `;
   if (isSubClass(name)) {
-    classString += `extends ${subClasses[name]} `
+    classString += `extends ${subClasses[name]} `;
   }
-  classString += '{\n' + stringTypeMap;
+  classString += "{\n" + stringTypeMap;
   classString += "}";
 
   return classString;
@@ -148,7 +151,7 @@ export function getInterfaceDescriptions(typeStructure: TypeStructure, names: Na
         return null;
       }
     })
-    .filter(_ => _ !== null);
+    .filter((_) => _ !== null);
 }
 
 export function getClassDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
@@ -162,7 +165,5 @@ export function getClassDescriptions(typeStructure: TypeStructure, names: NameEn
         return null;
       }
     })
-    .filter(_ => _ !== null);
+    .filter((_) => _ !== null);
 }
-
-
