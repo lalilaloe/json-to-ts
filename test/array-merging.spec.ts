@@ -1,9 +1,9 @@
 import * as assert from "assert";
-import { removeWhiteSpace } from "./util/index";
 import JsonToTS from "../src/index";
+import { removeWhiteSpace } from "./util/index";
 
-describe("Array type merging", function() {
-  it("should work with arrays with same inner types", function() {
+describe("Array type merging", function () {
+  it("should work with arrays with same inner types", function () {
     const json = {
       cats: [{ name: "Kittin" }, { name: "Sparkles" }]
     };
@@ -27,7 +27,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("union null type should be emited and field should be marked as optional", function() {
+  it("union null type should be emited and field should be marked as optional", function () {
     const json = [{ age: 42 }, { age: null }];
 
     const expectedTypes = [
@@ -46,7 +46,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 1);
   });
 
-  it("null should stay if it is part of array elements", function() {
+  it("null should stay if it is part of array elements", function () {
     const json = {
       arr: [42, "42", null]
     };
@@ -67,7 +67,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 1);
   });
 
-  it("array types should be merge even if they are nullable", function() {
+  it("array types should be merge even if they are nullable", function () {
     const json = [
       {
         field: ["string"]
@@ -93,14 +93,13 @@ describe("Array type merging", function() {
 
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      console.log(noWhiteSpaceInterface);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(interfaces.length, 1);
   });
 
-  it("object types should be merge even if they are nullable", function() {
+  it("object types should be merge even if they are nullable", function () {
     const json = [
       {
         field: { tag: "world" }
@@ -131,7 +130,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should work with arrays with inner types that has optinal field", function() {
+  it("should work with arrays with inner types that has optinal field", function () {
     const json = {
       cats: [{ name: "Kittin" }, { name: "Sparkles", age: 20 }]
     };
@@ -156,7 +155,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should work with arrays with inner types that has no common fields", function() {
+  it("should work with arrays with inner types that has no common fields", function () {
     const json = {
       cats: [{ name: "Kittin" }, { age: 20 }]
     };
@@ -181,7 +180,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should work with arrays with inner types that have common field that has different types", function() {
+  it("should work with arrays with inner types that have common field that has different types", function () {
     const json = {
       cats: [{ age: "20" }, { age: 20 }]
     };
@@ -205,7 +204,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should solve edge case 1", function() {
+  it("should solve edge case 1", function () {
     const json = {
       cats: [{ age: [42] }, { age: ["42"] }],
       dads: ["hello", 42]
@@ -231,7 +230,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should solve edge case 2", function() {
+  it("should solve edge case 2", function () {
     const json = {
       items: [
         {
@@ -287,7 +286,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 4);
   });
 
-  it("should solve edge case 3", function() {
+  it("should solve edge case 3", function () {
     const json = [
       {
         nestedElements: [
@@ -333,7 +332,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should merge empty array with primitive types", function() {
+  it("should merge empty array with primitive types", function () {
     const json = [
       {
         nestedElements: []
@@ -359,7 +358,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 1);
   });
 
-  it("should merge empty array with object types", function() {
+  it("should merge empty array with object types", function () {
     const json = [
       {
         nestedElements: []
@@ -388,7 +387,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 2);
   });
 
-  it("should merge empty array with array types", function() {
+  it("should merge empty array with array types", function () {
     const json = [
       {
         nestedElements: []
@@ -414,7 +413,7 @@ describe("Array type merging", function() {
     assert.strictEqual(interfaces.length, 1);
   });
 
-  it("should merge union types with readable names ", function() {
+  it("should merge union types with readable names ", function () {
     const json = [
       {
         marius: "marius"

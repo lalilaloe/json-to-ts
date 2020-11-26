@@ -1,9 +1,9 @@
 import * as assert from "assert";
-import { removeWhiteSpace } from "./util/index";
 import JsonToTS from "../src/index";
+import { removeWhiteSpace } from "./util/index";
 
-describe("Multiple interfaces", function() {
-  it("should create separate interface for nested objects", function() {
+describe("Multiple interfaces", function () {
+  it("should create separate interface for nested objects", function () {
     const json = {
       a: {
         b: 42
@@ -25,7 +25,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should not create duplicate on same type object fields", function() {
+  it("should not create duplicate on same type object fields", function () {
     const json = {
       a: {
         b: 42
@@ -54,7 +54,7 @@ describe("Multiple interfaces", function() {
     assert(interfaces.length === 2);
   });
 
-  it("should have multi keyword interfaces created without space", function() {
+  it("should have multi keyword interfaces created without space", function () {
     const json = {
       "hello world": {
         b: 42
@@ -76,7 +76,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should have unique names for nested objects since they ", function() {
+  it("should have unique names for nested objects since they ", function () {
     const json = {
       name: "Larry",
       parent: {
@@ -91,15 +91,15 @@ describe("Multiple interfaces", function() {
     const expectedTypes = [
       `interface RootObject {
         name: string;
-        parent: Parent2;
+        parent: Parent;
       }`,
       `interface Parent {
         name: string;
-        parent?: any;
+        parent: Parent2;
       }`,
       `interface Parent2 {
         name: string;
-        parent: Parent;
+        parent?: any;
       }`
     ].map(removeWhiteSpace);
 
@@ -110,7 +110,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should support multi nested arrays", function() {
+  it("should support multi nested arrays", function () {
     const json = {
       cats: [
         [{ name: "Kittin" }, { name: "Kittin" }, { name: "Kittin" }],
@@ -133,7 +133,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should singularize array types (dogs: [...] => dogs: Dog[] )", function() {
+  it("should singularize array types (dogs: [...] => dogs: Dog[] )", function () {
     const json = {
       dogs: [{ name: "sparky" }, { name: "goodboi" }]
     };
@@ -154,7 +154,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should not singularize if not array type (dogs: {} => dogs: Dogs )", function() {
+  it("should not singularize if not array type (dogs: {} => dogs: Dogs )", function () {
     const json = {
       cats: {
         popularity: "very popular"
@@ -177,7 +177,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should capitalize interface names", function() {
+  it("should capitalize interface names", function () {
     const json = {
       cat: {}
     };
@@ -197,7 +197,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should start unique names increment with 2", function() {
+  it("should start unique names increment with 2", function () {
     const json = {
       a: {
         human: { legs: 4 }
@@ -233,7 +233,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should normalize invalid interface names 1", function() {
+  it("should normalize invalid interface names 1", function () {
     const json = {
       "#@#123#@#": {
         name: "dummy string"
@@ -256,7 +256,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should normalize invalid interface names 2", function() {
+  it("should normalize invalid interface names 2", function () {
     const json = {
       "hello#@#123#@#": {
         name: "dummy string"
@@ -280,7 +280,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should normalize invalid interface names to pascal case", function() {
+  it("should normalize invalid interface names to pascal case", function () {
     const json = {
       "%#hello#@#123#@#": {
         name: "dummy string"
@@ -304,7 +304,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should have question mark after optional invalid interface name", function() {
+  it("should have question mark after optional invalid interface name", function () {
     const json = [{ "hello#123": "sample" }, {}];
 
     const expectedTypes = [
@@ -321,7 +321,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should have question mark after null value invalid interface name", function() {
+  it("should have question mark after null value invalid interface name", function () {
     const json = {
       "hello#123": null
     };
@@ -340,7 +340,7 @@ describe("Multiple interfaces", function() {
     });
   });
 
-  it("should have question mark after null value invalid optional interface name", function() {
+  it("should have question mark after null value invalid optional interface name", function () {
     const json = [{ "hello#123": null }, {}];
 
     const expectedTypes = [
