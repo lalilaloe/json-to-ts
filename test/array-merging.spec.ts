@@ -29,9 +29,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -58,9 +58,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);
@@ -89,9 +89,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);
@@ -131,9 +131,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);
@@ -172,9 +172,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -207,9 +207,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -242,9 +242,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -276,9 +276,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -312,9 +312,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -378,9 +378,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 4);
@@ -434,9 +434,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -470,9 +470,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);
@@ -509,9 +509,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 2);
@@ -545,9 +545,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);
@@ -581,9 +581,9 @@ describe("Array type merging", function () {
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
 
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
     assert.strictEqual(classes.length, 1);

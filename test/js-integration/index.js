@@ -15,25 +15,21 @@ interface Cat {
 }`;
 
     const json = {
-      cats: [
-        { name: 'Kittin' },
-        { name: 'Mittin' },
-      ],
+      cats: [{ name: "Kittin" }, { name: "Mittin" }],
       favoriteNumber: 42,
       favoriteWord: "Hello",
     };
 
-    const interfaces = JsonToTS(json)
-      .reduce((type1, type2) => {
-        return `${type1}\n${type2}`;
-      })
+    const interfaces = JsonToTS(json).reduce((type1, type2) => {
+      return `${type1}\n${type2}`;
+    });
 
-    assert.strictEqual(interfaces.trim(), expected.trim())
+    assert.strictEqual(interfaces.trim(), expected.trim());
 
     // Classes
-    const classes = JsonToTS(json, { useInterface: false }).
-      reduce((type1, type2) => {
-        return `${type1}\n${type2}`
-      });
-    assert.strictEqual(classes.trim(), expected.replace(/interface/g, 'class').trim());
-  })
+    const classes = JsonToTS(json, { useInterface: false }).reduce((type1, type2) => {
+      return `${type1}\n${type2}`;
+    });
+    assert.strictEqual(classes.trim(), expected.replace(/interface/g, "class").trim());
+  });
+});

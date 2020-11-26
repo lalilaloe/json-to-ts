@@ -1,9 +1,5 @@
 import { shim } from "es7-shim/es7-shim";
-import {
-  getDescriptions,
-  getExplicitRef,
-  getStringFromDescription
-} from "./get-interfaces";
+import { getDescriptions, getExplicitRef, getStringFromDescription } from "./get-interfaces";
 import { getNames, normalizeInvalidTypeName, pascalCase } from "./get-names";
 import { getTypeStructure, optimizeTypeStructure } from "./get-type-structure";
 import { Options } from "./model";
@@ -40,17 +36,17 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
   const names = getNames(typeStructure, options.rootName);
 
   if (options.useInterface) {
-    const interfaceDescriptions = getDescriptions(typeStructure, names)
-    return interfaceDescriptions.map(
-      description => getStringFromDescription(description, false, interfaceDescriptions)
-    ).filter(d => d);
+    const interfaceDescriptions = getDescriptions(typeStructure, names);
+    return interfaceDescriptions
+      .map((description) => getStringFromDescription(description, false, interfaceDescriptions))
+      .filter((d) => d);
   } else {
     // TODO: move to function
     // Fixes creating duplicate classes with references ex. property[RefClass]
-    const classDescriptions = getDescriptions(typeStructure, names)
-    const explicitRefs = classDescriptions.filter(d => {
-      return Object.keys(d.typeMap).find(key => /[\[\]]/g.test(key))
-    })
+    const classDescriptions = getDescriptions(typeStructure, names);
+    const explicitRefs = classDescriptions.filter((d) => {
+      return Object.keys(d.typeMap).find((key) => /[\[\]]/g.test(key));
+    });
     if (explicitRefs && explicitRefs.length) {
       for (const ref of explicitRefs) {
         const keysWithExplicitRef = Object.keys(ref.typeMap).filter((key) => /[\[\]]/g.test(key));
@@ -74,9 +70,9 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
       }
     }
 
-    return classDescriptions.map(
-      description => getStringFromDescription(description, true, classDescriptions)
-    ).filter(d => d);
+    return classDescriptions
+      .map((description) => getStringFromDescription(description, true, classDescriptions))
+      .filter((d) => d);
   }
 }
 

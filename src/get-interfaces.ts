@@ -83,31 +83,38 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
   );
 }
 
-export function getStringFromDescription({ name, typeMap }: InterfaceDescription, asClass: boolean = false, descriptions: InterfaceDescription[] = []): string {
+export function getStringFromDescription(
+  { name, typeMap }: InterfaceDescription,
+  asClass: boolean = false,
+  descriptions: InterfaceDescription[] = []
+): string {
   const stringTypeMap = Object.entries(typeMap)
     .map(([key, typeName]) => {
-      if (/\+/g.test(key)) { // In case of a subClass
-        subClasses[typeName] = name
-        return ''; // Discard property from parent
+      if (/\+/g.test(key)) {
+        // In case of a subClass
+        subClasses[typeName] = name;
+        return ""; // Discard property from parent
       }
-      if (/[\[\]]/g.test(key)) { // In case of an explicitRef
+      if (/[\[\]]/g.test(key)) {
+        // In case of an explicitRef
         const explicitRef = getExplicitRef(key, typeName);
         key = explicitRef.key;
         typeName = explicitRef.typeName;
       }
       if (/\[(?=[a-z-A-Z]).*\]/g.test(typeName)) {
         const explicitRef = getExplicitRef(typeName);
-        typeName = explicitRef.typeName// + (isArray ? '[]' : '');
+        typeName = explicitRef.typeName; // + (isArray ? '[]' : '');
       }
       return `  ${key}: ${typeName};\n`;
     })
     .reduce((a, b) => (a += b), "");
 
   if (/[\[\]]/g.test(name)) {
-    name = getExplicitRef(name).typeName
-    if (descriptions.find(desc => desc.name === name || getExplicitRef(desc.name).typeName === name)) { // In case the className already exists ommit the propably empty class
+    name = getExplicitRef(name).typeName;
+    if (descriptions.find((desc) => desc.name === name || getExplicitRef(desc.name).typeName === name)) {
+      // In case the className already exists ommit the propably empty class
       if (!Object.entries(typeMap).length) {
-        return ''
+        return "";
       } else {
         //console.warn('Would omit class, but it contains items: ' + name + ` ${Object.entries(typeMap)}`)
       }
@@ -118,9 +125,9 @@ export function getStringFromDescription({ name, typeMap }: InterfaceDescription
   if (asClass) {
     interfaceString = `class ${name} `;
     if (isSubClass(name)) {
-      interfaceString += `extends ${subClasses[name]} `
+      interfaceString += `extends ${subClasses[name]} `;
     }
-    interfaceString += '{\n'
+    interfaceString += "{\n";
   }
 
   interfaceString += stringTypeMap;
@@ -158,5 +165,3 @@ export function getDescriptions(typeStructure: TypeStructure, names: NameEntry[]
     })
     .filter((_) => _ !== null);
 }
-
-

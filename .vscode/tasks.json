@@ -6,37 +6,25 @@
   "tasks": [
     {
       "label": "install",
-      "args": [
-        "install"
-      ]
+      "args": ["install"]
     },
     {
       "label": "update",
-      "args": [
-        "update"
-      ]
+      "args": ["update"]
     },
     {
       "label": "test",
-      "args": [
-        "run",
-        "test"
-      ]
+      "args": ["run", "test"]
     },
     {
       "label": "build",
-      "args": [
-        "run",
-        "build"
-      ]
+      "args": ["run", "build"]
     },
     {
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "option": "watch",
-      "problemMatcher": [
-        "$tsc-watch"
-      ],
+      "problemMatcher": ["$tsc-watch"],
       "group": "build",
       "label": "watch"
     }

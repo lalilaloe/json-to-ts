@@ -9,13 +9,9 @@
       "request": "launch",
       "name": "Mocha Test",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "${workspaceRoot}/build/test/**/*.spec.js",
-      ],
+      "args": ["${workspaceRoot}/build/test/**/*.spec.js"],
       "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
+      "skipFiles": ["<node_internals>/**"]
     },
     {
       "type": "node",
@@ -25,7 +21,7 @@
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "watch",
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js",
+        "${workspaceRoot}/build/**/*.js"
         // "${workspaceRoot}/build/**/*.d.ts",
         // "${workspaceRoot}/build/**/*.js.map"
       ]

@@ -46,12 +46,12 @@ describe("Root array type", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
-    assert.equal(classes.length, 1)
+    assert.equal(classes.length, 1);
   });
 
   it("should handle array with multiple same objects [object, object]", function () {
@@ -73,12 +73,12 @@ describe("Root array type", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
-    assert.equal(classes.length, 1)
+    assert.equal(classes.length, 1);
   });
 
   it("should handle array with multiple different objects [object1, object2]", function () {
@@ -101,11 +101,11 @@ describe("Root array type", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false });
-    classes.forEach(i => {
+    classes.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
-      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+      assert(expectedTypes.map((type) => type.replace(/interface/g, "class")).includes(noWhiteSpaceInterface));
     });
 
-    assert.equal(classes.length, 1)
+    assert.equal(classes.length, 1);
   });
 });

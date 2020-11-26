@@ -16,7 +16,7 @@ describe("Single interface", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -36,7 +36,7 @@ describe("Single interface", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -56,7 +56,7 @@ describe("Single interface", function () {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -74,7 +74,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    assert.strictEqual(expected.replace(/interface/g, 'class').trim(), classes.trim());
+    assert.strictEqual(expected.replace(/interface/g, "class").trim(), classes.trim());
   });
 
   it("should work with multiple key words and optional fields", function () {
@@ -91,7 +91,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    assert.strictEqual(expected.replace(/interface/g, 'class').trim(), classes.trim());
+    assert.strictEqual(expected.replace(/interface/g, "class").trim(), classes.trim());
   });
 
   it("should work with primitive types", function () {
@@ -114,7 +114,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -138,7 +138,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -158,7 +158,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -175,7 +175,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 
@@ -195,7 +195,7 @@ interface RootObject {
 
     // Classes
     const classes = JsonToTS(json, { useInterface: false }).pop();
-    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    const [c, d] = [expected.replace(/interface/g, "class"), classes].map(removeWhiteSpace);
     assert.strictEqual(c, d);
   });
 });

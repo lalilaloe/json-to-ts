@@ -89,11 +89,14 @@ function getTypeGroup(value: any): TypeGroup {
 
 function createTypeObject(obj: any, types: TypeDescription[]): any {
   return Object.entries(obj).reduce((typeObj, [key, value]) => {
-    if (value && !Object.keys(value).length) { // /[\[\]]/g.test(key)
-      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) { // Non explcit Ref with empty object/array ex. 'key': {}
+    if (value && !Object.keys(value).length) {
+      // /[\[\]]/g.test(key)
+      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) {
+        // Non explcit Ref with empty object/array ex. 'key': {}
         //key = key + `[${capitalize((pascalCase(key)))}]`
       }
-      if (/\+/g.test(key) && Object.keys(typeObj).length) { // Make sure object is unique if empty 
+      if (/\+/g.test(key) && Object.keys(typeObj).length) {
+        // Make sure object is unique if empty
         //value[key] = {}
       }
     }

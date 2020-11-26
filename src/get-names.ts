@@ -78,11 +78,11 @@ function getNameById(
        * and if not then no need to singularize
        */
       name = [keyName]
-        .map(key => parseKeyMetaData(key).keyValue)
-        .map(name => (isInsideArray ? pluralize.singular(name) : name))
+        .map((key) => parseKeyMetaData(key).keyValue)
+        .map((name) => (isInsideArray ? pluralize.singular(name) : name))
         .map(pascalCase)
         .map(normalizeInvalidTypeName)
-        .map(name =>
+        .map((name) =>
           uniqueByIncrement(
             name,
             nameMap.map(({ name }) => name)
