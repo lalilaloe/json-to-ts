@@ -8,13 +8,13 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Typescript",
-      "program": "${workspaceRoot}/src/index.ts",
+      "program": "${workspaceRoot}/src/debug.ts",
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "build",
+      "preLaunchTask": "watch",
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
-        "${workspaceRoot}/build/**/*.d.ts",
-        "${workspaceRoot}/build/**/*.js.map"
+        // "${workspaceRoot}/build/**/*.d.ts",
+        // "${workspaceRoot}/build/**/*.js.map"
       ]
     }
   ]
