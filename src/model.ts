@@ -33,7 +33,7 @@ export interface InterfaceDescription {
 }
 
 export interface Options {
-  rootName: string;
+  rootName?: string;
   useInterface?: boolean;
 }
 

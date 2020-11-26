@@ -1,9 +1,9 @@
 import * as assert from "assert";
-import { removeWhiteSpace } from "./util/index";
 import JsonToTS from "../src/index";
+import { removeWhiteSpace } from "./util/index";
 
-describe("Root array type", function() {
-  it("should throw error on unsupprted array types", function() {
+describe("Root array type", function () {
+  it("should throw error on unsupprted array types", function () {
     const unsupportedArrays = [
       ["sample string", "sample string2"],
       [42, 32],
@@ -27,7 +27,7 @@ describe("Root array type", function() {
     });
   });
 
-  it("should handle array with single object [object]", function() {
+  it("should handle array with single object [object]", function () {
     const json = [{ marius: "marius" }];
 
     const expectedTypes = [
@@ -43,9 +43,18 @@ describe("Root array type", function() {
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
     assert.equal(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.equal(classes.length, 1)
   });
 
-  it("should handle array with multiple same objects [object, object]", function() {
+  it("should handle array with multiple same objects [object, object]", function () {
     const json = [{ marius: "marius" }, { marius: "marius" }];
 
     const expectedTypes = [
@@ -61,9 +70,18 @@ describe("Root array type", function() {
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
     assert.equal(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.equal(classes.length, 1)
   });
 
-  it("should handle array with multiple different objects [object1, object2]", function() {
+  it("should handle array with multiple different objects [object1, object2]", function () {
     const json = [{ marius: "marius" }, { darius: "darius" }];
 
     const expectedTypes = [
@@ -80,5 +98,14 @@ describe("Root array type", function() {
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
     assert.equal(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.equal(classes.length, 1)
   });
 });

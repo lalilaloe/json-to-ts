@@ -14,7 +14,7 @@ describe("Array type merging", function () {
       }`,
       `interface Cat {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
@@ -25,6 +25,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("union null type should be emited and field should be marked as optional", function () {
@@ -44,6 +54,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 
   it("null should stay if it is part of array elements", function () {
@@ -65,6 +85,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 
   it("array types should be merge even if they are nullable", function () {
@@ -97,6 +127,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 
   it("object types should be merge even if they are nullable", function () {
@@ -128,6 +168,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should work with arrays with inner types that has optinal field", function () {
@@ -153,6 +203,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should work with arrays with inner types that has no common fields", function () {
@@ -178,6 +238,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should work with arrays with inner types that have common field that has different types", function () {
@@ -202,6 +272,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should solve edge case 1", function () {
@@ -228,6 +308,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should solve edge case 2", function () {
@@ -284,6 +374,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 4);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 4);
   });
 
   it("should solve edge case 3", function () {
@@ -330,6 +430,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should merge empty array with primitive types", function () {
@@ -356,6 +466,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 
   it("should merge empty array with object types", function () {
@@ -385,6 +505,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should merge empty array with array types", function () {
@@ -411,6 +541,16 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 
   it("should merge union types with readable names ", function () {
@@ -437,5 +577,15 @@ describe("Array type merging", function () {
     });
 
     assert.strictEqual(interfaces.length, 1);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 1);
   });
 });

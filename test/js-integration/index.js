@@ -17,20 +17,26 @@ interface Cat {
 
     const json = {
       cats: [
-        {name: 'Kittin'},
-        {name: 'Mittin'},
+        { name: 'Kittin' },
+        { name: 'Mittin' },
       ],
       favoriteNumber: 42,
       favoriteWord: 'Hello'
     }
 
-    const output = JsonToTS(json)
+    const interfaces = JsonToTS(json)
       .reduce((type1, type2) => {
         return `${type1}\n${type2}`
       })
-      .trim()
 
-    assert.strictEqual(output, expected.trim())
+    assert.strictEqual(interfaces.trim(), expected.trim())
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).
+      reduce((type1, type2) => {
+        return `${type1}\n${type2}`
+      });
+    assert.strictEqual(classes.trim(), expected.replace(/interface/g, 'class').trim());
   })
 
 })

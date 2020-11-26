@@ -23,6 +23,12 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    JsonToTS(json, { useInterface: false }).forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should not create duplicate on same type object fields", function () {
@@ -52,6 +58,16 @@ describe("Multiple interfaces", function () {
     });
 
     assert(interfaces.length === 2);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 2);
   });
 
   it("should have multi keyword interfaces created without space", function () {
@@ -74,6 +90,13 @@ describe("Multiple interfaces", function () {
     interfaces.forEach(typeInterface => {
       assert(expectedTypes.includes(typeInterface));
     });
+
+    // TODO: test Classes
+    // const classes = JsonToTS(json, { useInterface: false });
+    // classes.forEach(i => {
+    //   const noWhiteSpaceInterface = removeWhiteSpace(i);
+    //   assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    // });
   });
 
   it("should have unique names for nested objects since they ", function () {
@@ -108,6 +131,13 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should support multi nested arrays", function () {
@@ -131,6 +161,12 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    JsonToTS(json, { useInterface: false }).forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should singularize array types (dogs: [...] => dogs: Dog[] )", function () {
@@ -151,6 +187,13 @@ describe("Multiple interfaces", function () {
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -175,6 +218,13 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should capitalize interface names", function () {
@@ -194,6 +244,13 @@ describe("Multiple interfaces", function () {
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -231,6 +288,13 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should normalize invalid interface names 1", function () {
@@ -254,6 +318,13 @@ describe("Multiple interfaces", function () {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
   });
 
   it("should normalize invalid interface names 2", function () {
@@ -273,10 +344,16 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -297,10 +374,16 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -314,10 +397,16 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -333,10 +422,16 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 
@@ -350,10 +445,16 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-
     interfaces.forEach(i => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
     });
   });
 });

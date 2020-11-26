@@ -1,21 +1,26 @@
 import * as assert from "assert";
-import { removeWhiteSpace } from "./util/index";
 import JsonToTS from "../src/index";
+import { removeWhiteSpace } from "./util/index";
 
-describe("Single interface", function() {
-  it("should work with empty objects", function() {
+describe("Single interface", function () {
+  it("should work with empty objects", function () {
     const json = {};
 
     const expected = `
       interface RootObject {
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should not quote underscore key names", function() {
+  it("should not quote underscore key names", function () {
     const json = {
       _marius: "marius"
     };
@@ -25,12 +30,17 @@ describe("Single interface", function() {
         _marius: string;
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should convert Date to Date type", function() {
+  it("should convert Date to Date type", function () {
     const json = {
       _marius: new Date()
     };
@@ -40,12 +50,17 @@ describe("Single interface", function() {
         _marius: Date;
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should work with multiple key words", function() {
+  it("should work with multiple key words", function () {
     const json = {
       "hello world": 42
     };
@@ -54,11 +69,15 @@ describe("Single interface", function() {
 interface RootObject {
   'hello world': number;
 }`;
-    const actual = JsonToTS(json).pop();
-    assert.strictEqual(expected.trim(), actual.trim());
+    const interfaces = JsonToTS(json).pop();
+    assert.strictEqual(expected.trim(), interfaces.trim());
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    assert.strictEqual(expected.replace(/interface/g, 'class').trim(), classes.trim());
   });
 
-  it("should work with multiple key words and optional fields", function() {
+  it("should work with multiple key words and optional fields", function () {
     const json = {
       "hello world": null
     };
@@ -67,11 +86,15 @@ interface RootObject {
 interface RootObject {
   'hello world'?: any;
 }`;
-    const actual = JsonToTS(json).pop();
-    assert.strictEqual(expected.trim(), actual.trim());
+    const interfaces = JsonToTS(json).pop();
+    assert.strictEqual(expected.trim(), interfaces.trim());
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    assert.strictEqual(expected.replace(/interface/g, 'class').trim(), classes.trim());
   });
 
-  it("should work with primitive types", function() {
+  it("should work with primitive types", function () {
     const json = {
       str: "this is string",
       num: 42,
@@ -88,9 +111,14 @@ interface RootObject {
     const interfaceStr = JsonToTS(json).pop();
     const [expect, actual] = [expected, interfaceStr].map(removeWhiteSpace);
     assert.strictEqual(expect, actual);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should keep field order", function() {
+  it("should keep field order", function () {
     const json = {
       c: "this is string",
       a: 42,
@@ -107,9 +135,14 @@ interface RootObject {
     const interfaceStr = JsonToTS(json).pop();
     const [expect, actual] = [expected, interfaceStr].map(removeWhiteSpace);
     assert.strictEqual(expect, actual);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should add optional field modifier on null values", function() {
+  it("should add optional field modifier on null values", function () {
     const json = {
       field: null
     };
@@ -119,24 +152,34 @@ interface RootObject {
         field?: any;
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it('should name root object interface "RootObject"', function() {
+  it('should name root object interface "RootObject"', function () {
     const json = {};
 
     const expected = `
       interface RootObject {
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 
-  it("should empty array should be any[]", function() {
+  it("should empty array should be any[]", function () {
     const json = {
       arr: []
     };
@@ -146,8 +189,13 @@ interface RootObject {
         arr: any[];
       }
     `;
-    const actual = JsonToTS(json).pop();
-    const [a, b] = [expected, actual].map(removeWhiteSpace);
+    const interfaces = JsonToTS(json).pop();
+    const [a, b] = [expected, interfaces].map(removeWhiteSpace);
     assert.strictEqual(a, b);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false }).pop();
+    const [c, d] = [expected.replace(/interface/g, 'class'), classes].map(removeWhiteSpace);
+    assert.strictEqual(c, d);
   });
 });
