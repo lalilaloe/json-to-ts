@@ -7,23 +7,21 @@
 # Example
 
 ### [Try it Online](http://www.jsontots.com)
+
 ### Code
 
 ```javascript
-const JsonToTS = require('json-to-ts')
+const JsonToTS = require("json-to-ts");
 
 const json = {
-  cats: [
-    {name: 'Kittin'},
-    {name: 'Mittin'}
-  ],
+  cats: [{ name: "Kittin" }, { name: "Mittin" }],
   favoriteNumber: 42,
-  favoriteWord: 'Hello'
-}
+  favoriteWord: "Hello",
+};
 
-JsonToTS(json).forEach( typeInterface => {
-  console.log(typeInterface)
-})
+JsonToTS(json).forEach((typeInterface) => {
+  console.log(typeInterface);
+});
 ```
 
 ### Output:
@@ -40,6 +38,7 @@ interface Cat {
 ```
 
 ## Converter
+
 - Array type merging (**Big deal**)
 - Union types
 - Duplicate type prevention

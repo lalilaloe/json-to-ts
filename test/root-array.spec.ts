@@ -11,12 +11,12 @@ describe("Root array type", function () {
       [null, null],
       [42, "sample string"],
       [42, { marius: "marius" }],
-      []
+      [],
     ];
 
     const expectedMessage = "Only (Object) and (Array of Object) are supported";
 
-    unsupportedArrays.forEach(arr => {
+    unsupportedArrays.forEach((arr) => {
       try {
         JsonToTS(arr);
         assert(false, "error should be thrown");
@@ -33,12 +33,12 @@ describe("Root array type", function () {
     const expectedTypes = [
       `interface RootObject {
         marius: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
 
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -60,12 +60,12 @@ describe("Root array type", function () {
     const expectedTypes = [
       `interface RootObject {
         marius: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
 
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -88,12 +88,12 @@ describe("Root array type", function () {
       `interface RootObject {
         marius?: string;
         darius?: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
 
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });

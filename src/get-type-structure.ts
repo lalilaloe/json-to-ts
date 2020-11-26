@@ -2,24 +2,23 @@ import * as hash from "hash.js";
 import { TypeDescription, TypeGroup, TypeStructure } from "./model";
 import { findTypeById, getTypeDescriptionGroup, isArray, isDate, isHash, isObject, onlyUnique } from "./util";
 
-
 function createTypeDescription(typeObj: any | string[], isUnion: boolean): TypeDescription {
   if (isArray(typeObj)) {
     return {
       id: Hash(JSON.stringify([...typeObj, isUnion])),
       arrayOfTypes: typeObj,
-      isUnion
+      isUnion,
     };
   } else {
     return {
       id: Hash(JSON.stringify(typeObj)),
-      typeObj
+      typeObj,
     };
   }
 }
 
 function getIdByType(typeObj: any | string[], types: TypeDescription[], isUnion: boolean = false): string {
-  let typeDesc = types.find(el => {
+  let typeDesc = types.find((el) => {
     return typeObjectMatchesTypeDesc(typeObj, el, isUnion);
   });
 
@@ -32,10 +31,7 @@ function getIdByType(typeObj: any | string[], types: TypeDescription[], isUnion:
 }
 
 function Hash(content: string): string {
-  return (hash as any)
-    .sha1()
-    .update(content)
-    .digest("hex");
+  return (hash as any).sha1().update(content).digest("hex");
 }
 
 function typeObjectMatchesTypeDesc(typeObj: any | string[], typeDesc: TypeDescription, isUnion): boolean {
@@ -109,30 +105,30 @@ function createTypeObject(obj: any, types: TypeDescription[]): any {
 
     return {
       ...typeObj,
-      [key]: rootTypeId
+      [key]: rootTypeId,
     };
   }, {});
 }
 
 function getMergedObjects(typesOfArray: TypeDescription[], types: TypeDescription[]): string {
-  const typeObjects = typesOfArray.map(typeDesc => typeDesc.typeObj);
+  const typeObjects = typesOfArray.map((typeDesc) => typeDesc.typeObj);
 
   const allKeys = typeObjects
-    .map(typeObj => Object.keys(typeObj))
+    .map((typeObj) => Object.keys(typeObj))
     .reduce((a, b) => [...a, ...b], [])
     .filter(onlyUnique);
 
   const commonKeys = typeObjects.reduce((commonKeys: string[], typeObj) => {
     const keys = Object.keys(typeObj);
-    return commonKeys.filter(key => keys.includes(key));
+    return commonKeys.filter((key) => keys.includes(key));
   }, allKeys) as string[];
 
-  const getKeyType = key => {
+  const getKeyType = (key) => {
     const typesOfKey = typeObjects
-      .filter(typeObj => {
+      .filter((typeObj) => {
         return Object.keys(typeObj).includes(key);
       })
-      .map(typeObj => typeObj[key])
+      .map((typeObj) => typeObj[key])
       .filter(onlyUnique);
 
     if (typesOfKey.length === 1) {
@@ -150,7 +146,7 @@ function getMergedObjects(typesOfArray: TypeDescription[], types: TypeDescriptio
 
     return {
       ...obj,
-      [keyValue]: type
+      [keyValue]: type,
     };
   }, {});
   return getIdByType(typeObj, types, true);
@@ -162,7 +158,7 @@ function toOptionalKey(key: string): string {
 
 function getMergedArrays(typesOfArray: TypeDescription[], types: TypeDescription[]): string {
   const idsOfArrayTypes = typesOfArray
-    .map(typeDesc => typeDesc.arrayOfTypes)
+    .map((typeDesc) => typeDesc.arrayOfTypes)
     .reduce((a, b) => [...a, ...b], [])
     .filter(onlyUnique);
 
@@ -176,14 +172,14 @@ function getMergedArrays(typesOfArray: TypeDescription[], types: TypeDescription
 // we merge union types example: (number | string), null -> (number | string | null)
 function getMergedUnion(typesOfArray: string[], types: TypeDescription[]): string {
   const innerUnionsTypes = typesOfArray
-    .map(id => {
+    .map((id) => {
       return findTypeById(id, types);
     })
-    .filter(_ => !!_ && _.isUnion)
-    .map(_ => _.arrayOfTypes)
+    .filter((_) => !!_ && _.isUnion)
+    .map((_) => _.arrayOfTypes)
     .reduce((a, b) => [...a, ...b], []);
 
-  const primitiveTypes = typesOfArray.filter(id => !findTypeById(id, types) || !findTypeById(id, types).isUnion); // primitives or not union
+  const primitiveTypes = typesOfArray.filter((id) => !findTypeById(id, types) || !findTypeById(id, types).isUnion); // primitives or not union
   return getIdByType([...innerUnionsTypes, ...primitiveTypes], types, true);
 }
 
@@ -192,22 +188,22 @@ function getInnerArrayType(typesOfArray: string[], types: TypeDescription[]): st
 
   const containsNull = typesOfArray.includes("null");
 
-  const arrayTypesDescriptions = typesOfArray.map(id => findTypeById(id, types)).filter(_ => !!_);
+  const arrayTypesDescriptions = typesOfArray.map((id) => findTypeById(id, types)).filter((_) => !!_);
 
   const allArrayType =
-    arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length ===
+    arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length ===
     typesOfArray.length;
 
   const allArrayTypeWithNull =
-    arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length + 1 ===
-    typesOfArray.length && containsNull;
+    arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length + 1 ===
+      typesOfArray.length && containsNull;
 
   const allObjectTypeWithNull =
-    arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length + 1 ===
-    typesOfArray.length && containsNull;
+    arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length + 1 ===
+      typesOfArray.length && containsNull;
 
   const allObjectType =
-    arrayTypesDescriptions.filter(typeDesc => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length ===
+    arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length ===
     typesOfArray.length;
 
   if (typesOfArray.length === 0) {
@@ -248,13 +244,13 @@ export function getTypeStructure(
 ): TypeStructure {
   switch (getTypeGroup(targetObj)) {
     case TypeGroup.Array:
-      const typesOfArray = (<any[]>targetObj).map(_ => getTypeStructure(_, types).rootTypeId).filter(onlyUnique);
+      const typesOfArray = (<any[]>targetObj).map((_) => getTypeStructure(_, types).rootTypeId).filter(onlyUnique);
       const arrayInnerTypeId = getInnerArrayType(typesOfArray, types); // create "union type of array types"
       const typeId = getIdByType([arrayInnerTypeId], types); // create type "array of union type"
 
       return {
         rootTypeId: typeId,
-        types
+        types,
       };
 
     case TypeGroup.Object:
@@ -263,13 +259,13 @@ export function getTypeStructure(
 
       return {
         rootTypeId: objType,
-        types
+        types,
       };
 
     case TypeGroup.Primitive:
       return {
         rootTypeId: getSimpleTypeName(targetObj),
-        types
+        types,
       };
 
     case TypeGroup.Date:
@@ -277,21 +273,21 @@ export function getTypeStructure(
 
       return {
         rootTypeId: dateType,
-        types
+        types,
       };
   }
 }
 
 function getAllUsedTypeIds({ rootTypeId, types }: TypeStructure): string[] {
-  const typeDesc = types.find(_ => _.id === rootTypeId);
+  const typeDesc = types.find((_) => _.id === rootTypeId);
 
   const subTypes = (typeDesc: TypeDescription) => {
     switch (getTypeDescriptionGroup(typeDesc)) {
       case TypeGroup.Array:
         const arrSubTypes = typeDesc.arrayOfTypes
           .filter(isHash)
-          .map(typeId => {
-            const typeDesc = types.find(_ => _.id === typeId);
+          .map((typeId) => {
+            const typeDesc = types.find((_) => _.id === typeId);
             return subTypes(typeDesc);
           })
           .reduce((a, b) => [...a, ...b], []);
@@ -300,8 +296,8 @@ function getAllUsedTypeIds({ rootTypeId, types }: TypeStructure): string[] {
       case TypeGroup.Object:
         const objSubTypes = Object.values(typeDesc.typeObj)
           .filter(isHash)
-          .map(typeId => {
-            const typeDesc = types.find(_ => _.id === typeId);
+          .map((typeId) => {
+            const typeDesc = types.find((_) => _.id === typeId);
             return subTypes(typeDesc);
           })
           .reduce((a, b) => [...a, ...b], []);
@@ -315,7 +311,7 @@ function getAllUsedTypeIds({ rootTypeId, types }: TypeStructure): string[] {
 export function optimizeTypeStructure(typeStructure: TypeStructure) {
   const usedTypeIds = getAllUsedTypeIds(typeStructure);
 
-  const optimizedTypes = typeStructure.types.filter(typeDesc => usedTypeIds.includes(typeDesc.id));
+  const optimizedTypes = typeStructure.types.filter((typeDesc) => usedTypeIds.includes(typeDesc.id));
 
   typeStructure.types = optimizedTypes;
 }

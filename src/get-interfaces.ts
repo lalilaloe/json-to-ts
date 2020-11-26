@@ -12,18 +12,18 @@ function parseKeyMetaData(key: string): KeyMetaData {
   if (isOptional) {
     return {
       isOptional,
-      keyValue: key.slice(0, -3)
+      keyValue: key.slice(0, -3),
     };
   } else {
     return {
       isOptional,
-      keyValue: key
+      keyValue: key,
     };
   }
 }
 
 function findNameById(id: string, names: NameEntry[]): string {
-  return names.find(_ => _.id === id).name;
+  return names.find((_) => _.id === id).name;
 }
 
 function removeNullFromUnion(unionTypeName: string) {
@@ -52,7 +52,7 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
         }
         let newType = findNameById(type, names);
         if (/[\[\]]/g.test(key)) {
-          newType = getExplicitRef(key).typeName
+          newType = getExplicitRef(key).typeName;
         }
         return [key, newType, isOptional];
       })
@@ -129,20 +129,20 @@ export function getStringFromDescription({ name, typeMap }: InterfaceDescription
   return interfaceString;
 }
 
-const subClasses: any = {}
+const subClasses: any = {};
 
 function isSubClass(name: string) {
-  return Object.keys(subClasses).find(s => s === name)
+  return Object.keys(subClasses).find((s) => s === name);
 }
 
-export function getExplicitRef(key: string, typeName: string = '') {
+export function getExplicitRef(key: string, typeName: string = "") {
   if (/[\[\]]/g.test(typeName)) {
-    typeName = key.replace(/.*\[|]|\'/g, '') + '[]';
+    typeName = key.replace(/.*\[|]|\'/g, "") + "[]";
   } else {
-    typeName = key.replace(/.*\[|]|\'/g, ''); // Get part between brackets ex. 'before[Between]'
+    typeName = key.replace(/.*\[|]|\'/g, ""); // Get part between brackets ex. 'before[Between]'
   }
-  key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
-  return { key, typeName }
+  key = key.replace(/\[.*\]|\'/g, ""); // Get part before brackets
+  return { key, typeName };
 }
 
 export function getDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
@@ -156,7 +156,7 @@ export function getDescriptions(typeStructure: TypeStructure, names: NameEntry[]
         return null;
       }
     })
-    .filter(_ => _ !== null);
+    .filter((_) => _ !== null);
 }
 
 

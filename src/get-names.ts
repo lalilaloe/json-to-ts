@@ -2,14 +2,13 @@ import * as pluralize from "pluralize";
 import { NameEntry, NameStructure, TypeDescription, TypeGroup, TypeStructure } from "./model";
 import { findTypeById, getTypeDescriptionGroup, isHash, parseKeyMetaData } from "./util";
 
-
 function getName(
   { rootTypeId, types }: TypeStructure,
   keyName: string,
   names: NameEntry[],
   isInsideArray: boolean
 ): NameStructure {
-  const typeDesc = types.find(_ => _.id === rootTypeId);
+  const typeDesc = types.find((_) => _.id === rootTypeId);
 
   switch (getTypeDescriptionGroup(typeDesc)) {
     case TypeGroup.Array:
@@ -24,7 +23,7 @@ function getName(
       });
       return {
         rootName: getNameById(typeDesc.id, keyName, isInsideArray, types, names),
-        names
+        names,
       };
 
     case TypeGroup.Object:
@@ -35,15 +34,14 @@ function getName(
       });
       return {
         rootName: rootName,
-        names
+        names,
       };
-
 
     case TypeGroup.Primitive:
       // in this case rootTypeId is primitive type string (string, null, number, boolean)
       return {
         rootName: rootTypeId,
-        names
+        names,
       };
   }
 }
@@ -59,7 +57,7 @@ function getNameById(
   types: TypeDescription[],
   nameMap: NameEntry[]
 ): string {
-  let nameEntry = nameMap.find(_ => _.id === id);
+  let nameEntry = nameMap.find((_) => _.id === id);
 
   if (nameEntry) {
     return nameEntry.name;
@@ -100,7 +98,7 @@ function getNameById(
 export function pascalCase(name: string) {
   return name
     .split(/\s+/g)
-    .filter(_ => _ !== "")
+    .filter((_) => _ !== "")
     .map(capitalize)
     .reduce((a, b) => a + b);
 }
@@ -143,7 +141,7 @@ function getArrayName(typeDesc: TypeDescription, types: TypeDescription[], nameM
 function convertToReadableType(idOrPrimitive: string, types: TypeDescription[], nameMap: NameEntry[]): string {
   return isHash(idOrPrimitive)
     ? // array keyName makes no difference in picking name for type
-    getNameById(idOrPrimitive, null, true, types, nameMap)
+      getNameById(idOrPrimitive, null, true, types, nameMap)
     : idOrPrimitive;
 }
 

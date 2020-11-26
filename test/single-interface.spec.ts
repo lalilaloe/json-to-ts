@@ -22,7 +22,7 @@ describe("Single interface", function () {
 
   it("should not quote underscore key names", function () {
     const json = {
-      _marius: "marius"
+      _marius: "marius",
     };
 
     const expected = `
@@ -42,7 +42,7 @@ describe("Single interface", function () {
 
   it("should convert Date to Date type", function () {
     const json = {
-      _marius: new Date()
+      _marius: new Date(),
     };
 
     const expected = `
@@ -62,7 +62,7 @@ describe("Single interface", function () {
 
   it("should work with multiple key words", function () {
     const json = {
-      "hello world": 42
+      "hello world": 42,
     };
 
     const expected = `
@@ -79,7 +79,7 @@ interface RootObject {
 
   it("should work with multiple key words and optional fields", function () {
     const json = {
-      "hello world": null
+      "hello world": null,
     };
 
     const expected = `
@@ -98,7 +98,7 @@ interface RootObject {
     const json = {
       str: "this is string",
       num: 42,
-      bool: true
+      bool: true,
     };
 
     const expected = `
@@ -122,7 +122,7 @@ interface RootObject {
     const json = {
       c: "this is string",
       a: 42,
-      b: true
+      b: true,
     };
 
     const expected = `
@@ -144,7 +144,7 @@ interface RootObject {
 
   it("should add optional field modifier on null values", function () {
     const json = {
-      field: null
+      field: null,
     };
 
     const expected = `
@@ -181,7 +181,7 @@ interface RootObject {
 
   it("should empty array should be any[]", function () {
     const json = {
-      arr: []
+      arr: [],
     };
 
     const expected = `

@@ -6,8 +6,8 @@ describe("Multiple interfaces", function () {
   it("should create separate interface for nested objects", function () {
     const json = {
       a: {
-        b: 42
-      }
+        b: 42,
+      },
     };
 
     const expectedTypes = [
@@ -16,10 +16,10 @@ describe("Multiple interfaces", function () {
       }`,
       `interface A {
         b: number;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
-    JsonToTS(json).forEach(i => {
+    JsonToTS(json).forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -34,11 +34,11 @@ describe("Multiple interfaces", function () {
   it("should not create duplicate on same type object fields", function () {
     const json = {
       a: {
-        b: 42
+        b: 42,
       },
       c: {
-        b: 24
-      }
+        b: 24,
+      },
     };
 
     const expectedTypes = [
@@ -48,11 +48,11 @@ describe("Multiple interfaces", function () {
       }`,
       `interface A {
         b: number;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -73,8 +73,8 @@ describe("Multiple interfaces", function () {
   it("should have multi keyword interfaces created without space", function () {
     const json = {
       "hello world": {
-        b: 42
-      }
+        b: 42,
+      },
     };
 
     const expectedTypes = [
@@ -83,11 +83,11 @@ describe("Multiple interfaces", function () {
 }`,
       `interface HelloWorld {
   b: number;
-}`
-    ].map(_ => _.trim());
+}`,
+    ].map((_) => _.trim());
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(typeInterface => {
+    interfaces.forEach((typeInterface) => {
       assert(expectedTypes.includes(typeInterface));
     });
 
@@ -106,9 +106,9 @@ describe("Multiple interfaces", function () {
         name: "Garry",
         parent: {
           name: "Marry",
-          parent: null
-        }
-      }
+          parent: null,
+        },
+      },
     };
 
     const expectedTypes = [
@@ -127,7 +127,7 @@ describe("Multiple interfaces", function () {
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -144,8 +144,8 @@ describe("Multiple interfaces", function () {
     const json = {
       cats: [
         [{ name: "Kittin" }, { name: "Kittin" }, { name: "Kittin" }],
-        [{ name: "Kittin" }, { name: "Kittin" }, { name: "Kittin" }]
-      ]
+        [{ name: "Kittin" }, { name: "Kittin" }, { name: "Kittin" }],
+      ],
     };
 
     const expectedTypes = [
@@ -154,10 +154,10 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Cat {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
-    JsonToTS(json).forEach(i => {
+    JsonToTS(json).forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -171,7 +171,7 @@ describe("Multiple interfaces", function () {
 
   it("should singularize array types (dogs: [...] => dogs: Dog[] )", function () {
     const json = {
-      dogs: [{ name: "sparky" }, { name: "goodboi" }]
+      dogs: [{ name: "sparky" }, { name: "goodboi" }],
     };
 
     const expectedTypes = [
@@ -180,11 +180,11 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Dog {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -200,8 +200,8 @@ describe("Multiple interfaces", function () {
   it("should not singularize if not array type (dogs: {} => dogs: Dogs )", function () {
     const json = {
       cats: {
-        popularity: "very popular"
-      }
+        popularity: "very popular",
+      },
     };
 
     const expectedTypes = [
@@ -210,11 +210,11 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Cats {
         popularity: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -229,7 +229,7 @@ describe("Multiple interfaces", function () {
 
   it("should capitalize interface names", function () {
     const json = {
-      cat: {}
+      cat: {},
     };
 
     const expectedTypes = [
@@ -237,11 +237,11 @@ describe("Multiple interfaces", function () {
         cat: Cat;
       }`,
       `interface Cat {
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -257,11 +257,11 @@ describe("Multiple interfaces", function () {
   it("should start unique names increment with 2", function () {
     const json = {
       a: {
-        human: { legs: 4 }
+        human: { legs: 4 },
       },
       b: {
-        human: { arms: 2 }
-      }
+        human: { arms: 2 },
+      },
     };
 
     const expectedTypes = [
@@ -280,11 +280,11 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Human2 {
         arms: number;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -300,8 +300,8 @@ describe("Multiple interfaces", function () {
   it("should normalize invalid interface names 1", function () {
     const json = {
       "#@#123#@#": {
-        name: "dummy string"
-      }
+        name: "dummy string",
+      },
     };
 
     const expectedTypes = [
@@ -310,11 +310,11 @@ describe("Multiple interfaces", function () {
       }`,
       `interface _123 {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
-    interfaces.forEach(i => {
+    interfaces.forEach((i) => {
       const noWhiteSpaceInterface = removeWhiteSpace(i);
       assert(expectedTypes.includes(noWhiteSpaceInterface));
     });
@@ -330,8 +330,8 @@ describe("Multiple interfaces", function () {
   it("should normalize invalid interface names 2", function () {
     const json = {
       "hello#@#123#@#": {
-        name: "dummy string"
-      }
+        name: "dummy string",
+      },
     };
 
     const expectedTypes = [
@@ -340,7 +340,7 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Hello123 {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
@@ -360,8 +360,8 @@ describe("Multiple interfaces", function () {
   it("should normalize invalid interface names to pascal case", function () {
     const json = {
       "%#hello#@#123#@#": {
-        name: "dummy string"
-      }
+        name: "dummy string",
+      },
     };
 
     const expectedTypes = [
@@ -370,7 +370,7 @@ describe("Multiple interfaces", function () {
       }`,
       `interface Hello123 {
         name: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
@@ -393,7 +393,7 @@ describe("Multiple interfaces", function () {
     const expectedTypes = [
       `interface RootObject {
         'hello#123'?: string;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
@@ -412,13 +412,13 @@ describe("Multiple interfaces", function () {
 
   it("should have question mark after null value invalid interface name", function () {
     const json = {
-      "hello#123": null
+      "hello#123": null,
     };
 
     const expectedTypes = [
       `interface RootObject {
         'hello#123'?: any;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
@@ -441,7 +441,7 @@ describe("Multiple interfaces", function () {
     const expectedTypes = [
       `interface RootObject {
         'hello#123'?: any;
-      }`
+      }`,
     ].map(removeWhiteSpace);
 
     const interfaces = JsonToTS(json);
