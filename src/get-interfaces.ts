@@ -83,7 +83,7 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
   );
 }
 
-export function getStringFromDescription({ name, typeMap }: InterfaceDescription, asClass: boolean = false): string {
+export function getStringFromDescription({ name, typeMap }: InterfaceDescription, asClass: boolean = false, descriptions: InterfaceDescription[] = []): string {
   const stringTypeMap = Object.entries(typeMap)
     .map(([key, typeName]) => {
       if (/\+/g.test(key)) { // In case of a subClass
@@ -95,12 +95,23 @@ export function getStringFromDescription({ name, typeMap }: InterfaceDescription
         key = explicitRef.key;
         typeName = explicitRef.typeName;
       }
+      if (/\[(?=[a-z-A-Z]).*\]/g.test(typeName)) {
+        const explicitRef = getExplicitRef(typeName);
+        typeName = explicitRef.typeName// + (isArray ? '[]' : '');
+      }
       return `  ${key}: ${typeName};\n`;
     })
     .reduce((a, b) => (a += b), "");
 
   if (/[\[\]]/g.test(name)) {
     name = getExplicitRef(name).typeName
+    if (descriptions.find(desc => desc.name === name || getExplicitRef(desc.name).typeName === name)) { // In case the className already exists ommit the propably empty class
+      if (!Object.entries(typeMap).length) {
+        return ''
+      } else {
+        //console.warn('Would omit class, but it contains items: ' + name + ` ${Object.entries(typeMap)}`)
+      }
+    }
   }
 
   let interfaceString = `interface ${name} {\n`;
@@ -132,32 +143,6 @@ export function getExplicitRef(key: string, typeName: string = '') {
   }
   key = key.replace(/\[.*\]|\'/g, ''); // Get part before brackets 
   return { key, typeName }
-}
-
-export function getClassStringFromDescription({ name, typeMap }: InterfaceDescription): string {
-  const stringTypeMap = Object.entries(typeMap)
-    .map(([key, typeName]) => { // TODO: move to function
-      if (/\+/g.test(key)) { // In case of a subClass
-        subClasses[typeName] = name
-        return ''; // Discard property from parent
-      }
-      if (/[\[\]]/g.test(key)) { // In case of an explicitRef
-        const explicitRef = getExplicitRef(key, typeName);
-        key = explicitRef.key;
-        typeName = explicitRef.typeName;
-      }
-      return `  ${key}: ${typeName};\n`;
-    })
-    .reduce((a, b) => (a += b), "");
-
-  let classString = `class ${name} `;
-  if (isSubClass(name)) {
-    classString += `extends ${subClasses[name]} `
-  }
-  classString += '{\n' + stringTypeMap;
-  classString += "}";
-
-  return classString;
 }
 
 export function getDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {

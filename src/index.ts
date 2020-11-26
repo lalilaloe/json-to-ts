@@ -1,6 +1,6 @@
 import { shim } from "es7-shim/es7-shim";
 import {
-  getClassStringFromDescription, getDescriptions,
+  getDescriptions,
   getExplicitRef,
   getStringFromDescription
 } from "./get-interfaces";
@@ -43,9 +43,10 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
   const names = getNames(typeStructure, options.rootName);
 
   if (options.useInterface) {
-    return getDescriptions(typeStructure, names).map(
-      description => getStringFromDescription(description)
-    );
+    const interfaceDescriptions = getDescriptions(typeStructure, names)
+    return interfaceDescriptions.map(
+      description => getStringFromDescription(description, false, interfaceDescriptions)
+    ).filter(d => d);
   } else {
     // TODO: move to function
     // Fixes creating duplicate classes with references ex. property[RefClass]
@@ -73,7 +74,9 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
       }
     }
 
-    return classDescriptions.map(getClassStringFromDescription);
+    return classDescriptions.map(
+      description => getStringFromDescription(description, true, classDescriptions)
+    ).filter(d => d);
   }
 
 }
