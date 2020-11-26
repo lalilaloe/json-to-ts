@@ -82,8 +82,8 @@ function getNameById(
       name = [keyName]
         .map(key => parseKeyMetaData(key).keyValue)
         .map(name => (isInsideArray ? pluralize.singular(name) : name))
-        .map(normalizeInvalidTypeName)
         .map(pascalCase)
+        .map(normalizeInvalidTypeName)
         .map(name =>
           uniqueByIncrement(
             name,
@@ -110,13 +110,13 @@ export function capitalize(name: string) {
 }
 
 export function normalizeInvalidTypeName(name: string): string {
-  if (/^[a-zA-Z][a-zA-Z0-9]*$/.test(name)) {
+  if (/^[a-zA-Z][a-zA-Z0-9-\[\]]*$/.test(name)) {
     return name;
   } else {
     const noSymbolsName = name.replace(/[^a-zA-Z0-9]/g, "");
     const startsWithWordCharacter = /^[a-zA-Z]/.test(noSymbolsName);
 
-    return startsWithWordCharacter ? noSymbolsName : `_${noSymbolsName}`;
+    return startsWithWordCharacter ? pascalCase(noSymbolsName) : `_${noSymbolsName}`;
   }
 }
 

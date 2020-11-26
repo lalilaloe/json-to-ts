@@ -1,5 +1,4 @@
 import * as hash from "hash.js";
-import { capitalize, pascalCase } from "./get-names";
 import { TypeDescription, TypeGroup, TypeStructure } from "./model";
 import { findTypeById, getTypeDescriptionGroup, isArray, isDate, isHash, isObject, onlyUnique } from "./util";
 
@@ -94,12 +93,12 @@ function getTypeGroup(value: any): TypeGroup {
 
 function createTypeObject(obj: any, types: TypeDescription[]): any {
   return Object.entries(obj).reduce((typeObj, [key, value]) => {
-    if (!Object.keys(value).length) { // /[\[\]]/g.test(key)
-      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) {
-        key = key + `[${capitalize((pascalCase(key)))}]`
+    if (value && !Object.keys(value).length) { // /[\[\]]/g.test(key)
+      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) { // Non explcit Ref with empty object/array ex. 'key': {}
+        //key = key + `[${capitalize((pascalCase(key)))}]`
       }
       if (/\+/g.test(key) && Object.keys(typeObj).length) { // Make sure object is unique if empty 
-        value[key] = {}
+        //value[key] = {}
       }
     }
     if (/[\[\]]/g.test(key)) {

@@ -1,12 +1,8 @@
 import { shim } from "es7-shim/es7-shim";
 import {
-  getClassDescriptions,
-  getClassStringFromDescription,
-
+  getClassStringFromDescription, getDescriptions,
   getExplicitRef,
-
-  getInterfaceDescriptions,
-  getInterfaceStringFromDescription
+  getStringFromDescription
 } from "./get-interfaces";
 import { getNames, normalizeInvalidTypeName, pascalCase } from "./get-names";
 import { getTypeStructure, optimizeTypeStructure } from "./get-type-structure";
@@ -47,13 +43,13 @@ export default function JsonToTS(json: any, userOptions?: Options): string[] {
   const names = getNames(typeStructure, options.rootName);
 
   if (options.useInterface) {
-    return getInterfaceDescriptions(typeStructure, names).map(
-      getInterfaceStringFromDescription
+    return getDescriptions(typeStructure, names).map(
+      description => getStringFromDescription(description)
     );
   } else {
     // TODO: move to function
     // Fixes creating duplicate classes with references ex. property[RefClass]
-    const classDescriptions = getClassDescriptions(typeStructure, names)
+    const classDescriptions = getDescriptions(typeStructure, names)
     const explicitRefs = classDescriptions.filter(d => {
       return Object.keys(d.typeMap).find(key => /[\[\]]/g.test(key))
     })

@@ -83,12 +83,35 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
   );
 }
 
-export function getInterfaceStringFromDescription({ name, typeMap }: InterfaceDescription): string {
+export function getStringFromDescription({ name, typeMap }: InterfaceDescription, asClass: boolean = false): string {
   const stringTypeMap = Object.entries(typeMap)
-    .map(([key, name]) => `  ${key}: ${name};\n`)
+    .map(([key, typeName]) => {
+      if (/\+/g.test(key)) { // In case of a subClass
+        subClasses[typeName] = name
+        return ''; // Discard property from parent
+      }
+      if (/[\[\]]/g.test(key)) { // In case of an explicitRef
+        const explicitRef = getExplicitRef(key, typeName);
+        key = explicitRef.key;
+        typeName = explicitRef.typeName;
+      }
+      return `  ${key}: ${typeName};\n`;
+    })
     .reduce((a, b) => (a += b), "");
 
+  if (/[\[\]]/g.test(name)) {
+    name = getExplicitRef(name).typeName
+  }
+
   let interfaceString = `interface ${name} {\n`;
+  if (asClass) {
+    interfaceString = `class ${name} `;
+    if (isSubClass(name)) {
+      interfaceString += `extends ${subClasses[name]} `
+    }
+    interfaceString += '{\n'
+  }
+
   interfaceString += stringTypeMap;
   interfaceString += "}";
 
@@ -137,21 +160,7 @@ export function getClassStringFromDescription({ name, typeMap }: InterfaceDescri
   return classString;
 }
 
-export function getInterfaceDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
-  return names
-    .map(({ id, name }) => {
-      const typeDescription = findTypeById(id, typeStructure.types);
-      if (typeDescription.typeObj) {
-        const typeMap = replaceTypeObjIdsWithNames(typeDescription.typeObj, names);
-        return { name, typeMap };
-      } else {
-        return null;
-      }
-    })
-    .filter(_ => _ !== null);
-}
-
-export function getClassDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
+export function getDescriptions(typeStructure: TypeStructure, names: NameEntry[]): InterfaceDescription[] {
   return names
     .map(({ id, name }) => {
       const typeDescription = findTypeById(id, typeStructure.types);
