@@ -89,26 +89,18 @@ function getTypeGroup(value: any): TypeGroup {
 
 function createTypeObject(obj: any, types: TypeDescription[]): any {
   return Object.entries(obj).reduce((typeObj, [key, value]) => {
-    if (value && !Object.keys(value).length) {
-      // /[\[\]]/g.test(key)
-      if (!/[\[\]]/g.test(key) && !Object.keys(typeObj).length) {
-        // Non explcit Ref with empty object/array ex. 'key': {}
-        //key = key + `[${capitalize((pascalCase(key)))}]`
-      }
-      if (/\+/g.test(key) && Object.keys(typeObj).length) {
-        // Make sure object is unique if empty
-        //value[key] = {}
-      }
+    let typeId
+    if (isArray(value) && /[\[\]]/g.test(key) && typeObj[Object.keys(typeObj)[0]] && !value["length"] && typeObj[Object.keys(typeObj)[0]].length > 10) { // length 10 prevents using primitives as typeId ex. 'string'
+      // If explicit reference is an array and already contains, avoid creating new type from empty array type ex. key[Model]: []
+      typeId = typeObj[Object.keys(typeObj)[0]]
+    } else {
+      const { rootTypeId } = getTypeStructure(value, types);
+      typeId = rootTypeId
     }
-    if (/[\[\]]/g.test(key)) {
-      // TODO: Properly fix what now is fixed in index.ts correcting ExplicitRefs
-    }
-
-    const { rootTypeId } = getTypeStructure(value, types);
 
     return {
       ...typeObj,
-      [key]: rootTypeId,
+      [key]: typeId,
     };
   }, {});
 }
@@ -199,11 +191,11 @@ function getInnerArrayType(typesOfArray: string[], types: TypeDescription[]): st
 
   const allArrayTypeWithNull =
     arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Array).length + 1 ===
-      typesOfArray.length && containsNull;
+    typesOfArray.length && containsNull;
 
   const allObjectTypeWithNull =
     arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length + 1 ===
-      typesOfArray.length && containsNull;
+    typesOfArray.length && containsNull;
 
   const allObjectType =
     arrayTypesDescriptions.filter((typeDesc) => getTypeDescriptionGroup(typeDesc) === TypeGroup.Object).length ===

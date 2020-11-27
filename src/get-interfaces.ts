@@ -51,7 +51,7 @@ function replaceTypeObjIdsWithNames(typeObj: { [index: string]: string }, names:
           return [key, type, isOptional];
         }
         let newType = findNameById(type, names);
-        if (/[\[\]]/g.test(key)) {
+        if (/[\[\]]/g.test(key) && !newType.match(/\[\]/)) {
           newType = getExplicitRef(key).typeName;
         }
         return [key, newType, isOptional];

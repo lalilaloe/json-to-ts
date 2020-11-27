@@ -123,38 +123,82 @@ describe("Explicit reference", function () {
   });
   it("should reference to existing types existing type used as array", function () {
     const json = {
+      "moderators[Cat]": [], // Before creating Cat model
       cats: [{ name: "Kittin" }],
-      "moderators[Cat]": [],
+      "specialCats[Cat]": [], // After creating Cat model
     };
 
     const expectedTypes = [
       `interface RootObject {
-                cats: Cat[];             
-                moderators: Cat[];                
+                moderators: Cat[];   
+                cats: Cat[];
+                specialCats: Cat[];   
             }`,
       `interface Cat {
                 name: string;
             }`,
     ].map(removeWhiteSpace);
 
-    // const interfaces = JsonToTS(json); // TODO: class reference as array
-    // console.log(interfaces.reduce(pretty))
-    // interfaces.forEach(i => {
-    //     const noWhiteSpaceInterface = removeWhiteSpace(i);
-    //     assert(expectedTypes.includes(noWhiteSpaceInterface));
-    // });
+    const interfaces = JsonToTS(json);
+    interfaces.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
 
-    // assert.strictEqual(interfaces.length, 3);
+    assert.strictEqual(interfaces.length, 2);
 
-    // // Classes
-    // const classes = JsonToTS(json, { useInterface: false });
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
 
-    // classes.forEach(i => {
-    //     const noWhiteSpaceInterface = removeWhiteSpace(i);
-    //     assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
-    // });
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
 
-    // assert.strictEqual(classes.length, 3);
+    assert.strictEqual(classes.length, 2);
+  });
+  it("should reference to existing types if empty array/object exists", function () {
+    // This is an extra test where the input also contains an empty array or 
+    const json = {
+      emptyList: [],
+      emptyObject: {},
+      cats: [{ name: "Kittin" }],
+      "specialCats[Cat]": [],
+      "masterCat[Cat]": {},
+    };
+
+    const expectedTypes = [
+      `interface RootObject {
+                emptyList: any[];   
+                emptyObject: EmptyObject;   
+                cats: Cat[];
+                specialCats: Cat[];  
+                masterCat: Cat; 
+            }`,
+      `interface EmptyObject {
+            }`,
+      `interface Cat {
+                name: string;
+            }`,
+    ].map(removeWhiteSpace);
+
+    const interfaces = JsonToTS(json);
+    interfaces.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(interfaces.length, 3);
+
+    // Classes
+    const classes = JsonToTS(json, { useInterface: false });
+
+    classes.forEach(i => {
+      const noWhiteSpaceInterface = removeWhiteSpace(i);
+      assert(expectedTypes.map(type => type.replace(/interface/g, 'class')).includes(noWhiteSpaceInterface));
+    });
+
+    assert.strictEqual(classes.length, 3);
   });
   it("should reference to existing types even when content is same", function () {
     const json = {
